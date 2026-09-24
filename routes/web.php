@@ -7,5 +7,5 @@ Route::get('/', function () {
     return redirect()->route('activities.index');
 });
 
-Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
-Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
+// Menggantikan Route::get sebelumnya dengan Resource Route
+Route::resource('activities', ActivityController::class);
