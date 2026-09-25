@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Builder;
 class Activity extends Model
 {
     protected $fillable = [
@@ -18,5 +18,12 @@ class Activity extends Model
         return [
             'activity_date' => 'date',
         ];
+    }
+    public function scopeFilterStatus(Builder $query, ?string $status): Builder
+    {
+        $validStatuses = ['Planned', 'Ongoing', 'Done'];
+        return $query->when(in_array($status, $validStatuses, true), function ($q) use ($status) {
+            $q->where('status', $status);
+        });
     }
 }
