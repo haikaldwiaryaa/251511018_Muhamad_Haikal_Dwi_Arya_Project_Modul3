@@ -15,6 +15,28 @@
         </div>
     @endif
 
+    {{-- Form Filter Status (Independent Challenge) --}}
+    <form action="{{ route('activities.index') }}" method="GET"
+        style="margin-bottom: 1.5rem; display: flex; gap: 0.5rem; align-items: center; background: #f1f5f9; padding: 0.8rem; border-radius: 6px;">
+        <label for="filter_status"><strong>Filter Status:</strong></label>
+        <select name="status" id="filter_status" style="padding: 0.4rem; border-radius: 4px; border: 1px solid #cbd5e1;">
+            <option value="">Semua Status</option>
+            <option value="Planned" {{ request('status') === 'Planned' ? 'selected' : '' }}>Planned</option>
+            <option value="Ongoing" {{ request('status') === 'Ongoing' ? 'selected' : '' }}>Ongoing</option>
+            <option value="Done" {{ request('status') === 'Done' ? 'selected' : '' }}>Done</option>
+        </select>
+        <button type="submit"
+            style="padding: 0.4rem 0.8rem; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Terapkan
+        </button>
+        @if (request('status'))
+            <a href="{{ route('activities.index') }}"
+                style="color: #ef4444; font-size: 0.9rem; text-decoration: none; margin-left: 0.5rem;">
+                Reset Filter
+            </a>
+        @endif
+    </form>
+
     @forelse ($activities as $activity)
         <article class="card">
             <h2>

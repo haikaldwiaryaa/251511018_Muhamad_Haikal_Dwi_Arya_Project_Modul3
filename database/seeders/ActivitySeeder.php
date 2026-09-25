@@ -47,4 +47,3 @@ class ActivitySeeder extends Seeder
         }
     }
 }
-

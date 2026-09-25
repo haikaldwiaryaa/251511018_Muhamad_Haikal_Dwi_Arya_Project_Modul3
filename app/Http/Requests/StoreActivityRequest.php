@@ -22,4 +22,3 @@ class StoreActivityRequest extends FormRequest
         ];
     }
 }
-

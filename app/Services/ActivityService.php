@@ -33,7 +33,7 @@ class ActivityService
     {
         $allowed = self::TRANSITIONS[$current] ?? [];
 
-        if (!in_array($next, $allowed, true)) {
+        if (! in_array($next, $allowed, true)) {
             throw new DomainException("Transisi status {$current} ke {$next} tidak diizinkan.");
         }
     }
