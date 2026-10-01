@@ -8,10 +8,11 @@ use DomainException;
 class ActivityService
 {
     private const TRANSITIONS = [
-        'Planned' => ['Planned', 'Ongoing'],
-        'Ongoing' => ['Ongoing', 'Done'],
-        'Done' => ['Done'],
+        'draft' => ['draft', 'published'],
+        'published' => ['published', 'completed'],
+        'completed' => ['completed'],
     ];
+
 
     public function create(array $data): Activity
     {
@@ -33,7 +34,7 @@ class ActivityService
     {
         $allowed = self::TRANSITIONS[$current] ?? [];
 
-        if (! in_array($next, $allowed, true)) {
+        if (!in_array($next, $allowed, true)) {
             throw new DomainException("Transisi status {$current} ke {$next} tidak diizinkan.");
         }
     }

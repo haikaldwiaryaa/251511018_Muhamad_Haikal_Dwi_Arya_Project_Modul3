@@ -1,4 +1,26 @@
 <div style="margin-bottom: 1rem;">
+    <label for="category_id">Kategori:</label><br>
+    <select id="category_id" name="category_id" style="width: 100%; padding: 0.5rem;">
+        <option value="">-- Pilih Kategori --</option>
+        @foreach($categories as $cat)
+            <option value="{{ $cat->id }}" {{ old('category_id', $activity->category_id ?? '') == $cat->id ? 'selected' : '' }}>
+                {{ $cat->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('category_id')
+        <p style="color: red; margin: 0.2rem 0;">{{ $message }}</p>
+    @enderror
+</div>
+<div style="margin-bottom: 1rem;">
+    <label for="code">Kode Kegiatan (Unik):</label><br>
+    <input type="text" id="code" name="code" value="{{ old('code', $activity->code ?? '') }}"
+        style="width: 100%; padding: 0.5rem;">
+    @error('code')
+        <p style="color: red; margin: 0.2rem 0;">{{ $message }}</p>
+    @enderror
+</div>
+<div style="margin-bottom: 1rem;">
     <label for="title">Judul Kegiatan (min 5 karakter):</label><br>
     <input type="text" id="title" name="title" value="{{ old('title', $activity->title ?? '') }}"
         style="width: 100%; padding: 0.5rem;">

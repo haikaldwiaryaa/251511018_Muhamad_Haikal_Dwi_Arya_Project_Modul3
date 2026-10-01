@@ -10,7 +10,7 @@ use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
-
+use App\Models\Category;
 class ActivityController extends Controller
 {
     public function index(Request $request): View
@@ -29,7 +29,8 @@ class ActivityController extends Controller
 
     public function create(): View
     {
-        return view('activities.create');
+        $categories = Category::all();
+        return view('activities.create', compact('categories'));
     }
 
     // Menggunakan ActivityService untuk create
@@ -49,7 +50,8 @@ class ActivityController extends Controller
 
     public function edit(Activity $activity): View
     {
-        return view('activities.edit', compact('activity'));
+        $categories = Category::all();
+        return view('activities.edit', compact('activity', 'categories'));
     }
 
     // Menggunakan ActivityService dan menangani DomainException
@@ -80,4 +82,5 @@ class ActivityController extends Controller
             ->route('activities.index')
             ->with('success', 'Kegiatan berhasil dihapus.');
     }
+
 }
