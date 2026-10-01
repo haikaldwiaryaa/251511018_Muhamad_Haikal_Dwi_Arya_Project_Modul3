@@ -116,4 +116,24 @@ class ActivityController extends Controller
         }
     }
 
+
+    public function trash(): View
+    {
+        $activities = Activity::onlyTrashed()
+            ->with('category')
+            ->orderBy('deleted_at', 'desc')
+            ->paginate(10);
+
+        return view('activities.trash', compact('activities'));
+    }
+
+    public function restore(int $id): RedirectResponse
+    {
+        $activity = Activity::onlyTrashed()->findOrFail($id);
+        $activity->restore();
+
+        return redirect()
+            ->route('activities.trash')
+            ->with('success', 'Kegiatan berhasil dipulihkan (restore).');
+    }
 }

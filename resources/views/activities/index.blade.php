@@ -6,7 +6,7 @@
         <a href="{{ route('activities.create') }}"
             style="background: #16a34a; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
             + Tambah Kegiatan
-        </a>
+        </a> | <a href="{{ route('activities.trash') }}" style="color: #dc2626; font-weight: bold;">Lihat Trash (Data Terhapus)</a>
     </div>
 
     @if (session('success'))
