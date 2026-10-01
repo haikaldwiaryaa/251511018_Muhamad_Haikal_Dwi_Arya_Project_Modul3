@@ -9,3 +9,5 @@ Route::get('/', function () {
 
 // Menggantikan Route::get sebelumnya dengan Resource Route
 Route::resource('activities', ActivityController::class);
+Route::patch('activities/{activity}/publish', [ActivityController::class, 'publish'])->name('activities.publish');
+Route::patch('activities/{activity}/complete', [ActivityController::class, 'complete'])->name('activities.complete');

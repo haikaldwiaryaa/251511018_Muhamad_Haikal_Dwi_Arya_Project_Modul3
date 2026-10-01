@@ -48,20 +48,6 @@
     @enderror
 </div>
 
-<div style="margin-bottom: 1rem;">
-    <label for="status">Status:</label><br>
-    <select id="status" name="status" style="padding: 0.5rem;">
-        @php
-            $currentStatus = old('status', $activity->status ?? 'Planned');
-        @endphp
-        <option value="Planned" {{ $currentStatus === 'Planned' ? 'selected' : '' }}>Planned</option>
-        <option value="Ongoing" {{ $currentStatus === 'Ongoing' ? 'selected' : '' }}>Ongoing</option>
-        <option value="Done" {{ $currentStatus === 'Done' ? 'selected' : '' }}>Done</option>
-    </select>
-    @error('status')
-        <p style="color: red; margin: 0.2rem 0;">{{ $message }}</p>
-    @enderror
-</div>
 
 <button type="submit"
     style="padding: 0.5rem 1rem; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer;">

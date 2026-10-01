@@ -15,14 +15,29 @@ class ActivityController extends Controller
 {
     public function index(Request $request): View
     {
+        $search = $request->query('search');
+        $categoryId = $request->query('category_id');
         $status = $request->query('status');
-
+        $sort = $request->query('sort', 'desc'); // default terbaru
         $activities = Activity::query()
-            ->filterStatus($status)
-            ->orderBy('activity_date')
-            ->get();
-
-        return view('activities.index', compact('activities', 'status'));
+            ->with('category') // eager loading
+            ->when($search, function ($q, $search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('title', 'like', "%{$search}%")
+                        ->orWhere('code', 'like', "%{$search}%");
+                });
+            })
+            ->when($categoryId, function ($q, $catId) {
+                $q->where('category_id', $catId);
+            })
+            ->when($status, function ($q, $st) {
+                $q->where('status', $st);
+            })
+            ->orderBy('activity_date', $sort === 'asc' ? 'asc' : 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        $categories = Category::all();
+        return view('activities.index', compact('activities', 'categories', 'search', 'categoryId', 'status', 'sort'));
     }
 
 
@@ -81,6 +96,24 @@ class ActivityController extends Controller
         return redirect()
             ->route('activities.index')
             ->with('success', 'Kegiatan berhasil dihapus.');
+    }
+    public function publish(Activity $activity, ActivityService $service): RedirectResponse
+    {
+        try {
+            $service->publish($activity);
+            return back()->with('success', 'Kegiatan berhasil dipublikasikan.');
+        } catch (DomainException $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+    public function complete(Activity $activity, ActivityService $service): RedirectResponse
+    {
+        try {
+            $service->complete($activity);
+            return back()->with('success', 'Kegiatan berhasil diselesaikan.');
+        } catch (DomainException $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 }
