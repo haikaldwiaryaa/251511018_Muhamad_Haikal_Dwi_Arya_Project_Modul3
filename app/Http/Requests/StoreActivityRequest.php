@@ -3,13 +3,19 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreActivityRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // Wajib diubah ke true agar request diizinkan
+        return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if (!$this->has('status') || empty($this->status)) {
+            $this->merge(['status' => 'draft']);
+        }
     }
 
     public function rules(): array
@@ -21,7 +27,7 @@ class StoreActivityRequest extends FormRequest
             'title' => ['required', 'string', 'min:5', 'max:100'],
             'description' => ['nullable', 'string'],
             'activity_date' => ['required', 'date'],
-            'status' => ['required'],
+            'status' => ['nullable', 'in:draft,published,completed'],
         ];
     }
 }
