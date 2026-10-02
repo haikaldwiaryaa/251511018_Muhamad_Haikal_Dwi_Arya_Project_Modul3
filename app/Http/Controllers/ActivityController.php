@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 class ActivityController extends Controller
 {
     public function index(Request $request): View
@@ -51,7 +52,12 @@ class ActivityController extends Controller
     // Menggunakan ActivityService untuk create
     public function store(StoreActivityRequest $request, ActivityService $service): RedirectResponse
     {
-        $service->create($request->validated());
+        $data = $request->validated();
+        if ($request->hasFile('poster')) {
+            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+        }
+
+        $service->create($data);
 
         return redirect()
             ->route('activities.index')
@@ -76,7 +82,15 @@ class ActivityController extends Controller
         ActivityService $service
     ): RedirectResponse {
         try {
-            $service->update($activity, $request->validated());
+            $data = $request->validated();
+            if ($request->hasFile('poster')) {
+                if ($activity->poster_path && Storage::disk('public')->exists($activity->poster_path)) {
+                    Storage::disk('public')->delete($activity->poster_path);
+                }
+                $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+            }
+
+            $service->update($activity, $data);
 
             return redirect()
                 ->route('activities.show', $activity)

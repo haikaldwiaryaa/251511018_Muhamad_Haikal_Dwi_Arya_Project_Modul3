@@ -21,6 +21,7 @@ class Activity extends Model
         'activity_date',
         'capacity',
         'registered_count',
+        'poster_path',
         'status',
     ];
 
@@ -48,7 +49,8 @@ class Activity extends Model
     {
         $validStatuses = ['draft', 'published', 'completed', 'Planned', 'Ongoing', 'Done'];
         return $query->when(in_array($status, $validStatuses, true), function ($q) use ($status) {
-            $q->where('status', $status);
+            $q->where('poster_path',
+        'status', $status);
         });
     }
 }

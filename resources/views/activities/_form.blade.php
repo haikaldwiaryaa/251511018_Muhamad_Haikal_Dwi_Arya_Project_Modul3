@@ -49,6 +49,21 @@
 </div>
 
 
+
+<div style="margin-bottom: 1rem;">
+    <label for="poster">Poster Kegiatan (Gambar, Maks 2MB):</label><br>
+    <input type="file" id="poster" name="poster" accept="image/*" style="padding: 0.5rem 0;">
+    @error('poster')
+        <p style="color: red; margin: 0.2rem 0;">{{ $message }}</p>
+    @enderror
+    @if(isset($activity) && $activity->poster_path)
+        <div style="margin-top: 0.5rem;">
+            <p style="margin: 0; font-size: 0.9rem; color: #555;">Poster saat ini:</p>
+            <img src="{{ asset('storage/' . $activity->poster_path) }}" alt="Poster" style="max-height: 120px; border-radius: 4px; border: 1px solid #ccc; margin-top: 0.2rem;">
+        </div>
+    @endif
+</div>
+
 <button type="submit"
     style="padding: 0.5rem 1rem; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer;">
     Simpan
