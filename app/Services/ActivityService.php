@@ -99,7 +99,7 @@ class ActivityService
 
             // Simulasi kegagalan operasi kedua untuk membuktikan rollback terkontrol
             if ($simulateFail) {
-                throw new \RuntimeException('Simulasi kegagalan update registered_count (Rollback Test).');
+                throw new DomainException('Simulasi kegagalan update registered_count (Rollback Test).');
             }
 
             $activity->increment('registered_count');
