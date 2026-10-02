@@ -40,7 +40,7 @@
                     <td>
                         <form action="{{ route('activities.restore', $item->id) }}" method="POST" style="display:inline;">
                             @csrf
-                            @method('OATCH')
+                            @method('PATCH')
                             <button type="submit" class="btn btn-success">Restore</button>
                         </form>
                     </td>
